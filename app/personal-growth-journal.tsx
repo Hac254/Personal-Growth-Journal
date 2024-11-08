@@ -25,6 +25,9 @@ const colors = {
   navy: '#1F2261',
   green: '#00DC82',
   pink: '#FF3F9A',
+  purple: '#800080',
+  yellow: '#FFFF00',
+  teal: '#008080',
 }
 
 interface Value {
@@ -46,8 +49,10 @@ interface Moment {
   reflection: string
   imageUrl: string
   values: string[]
+  strengths: string[]
   timestamp: number
   mood: number
+  isDefault?: boolean
 }
 
 interface Strength {
@@ -82,17 +87,17 @@ interface Challenge {
 const initialValues: Value[] = [
   {
     id: '1',
-    name: 'Influence',
-    icon: '🌐',
-    color: 'bg-blue-500',
-    description: 'Making a positive impact on others and inspiring change.',
+    name: 'Growth',
+    icon: '🌱',
+    color: 'bg-green-500',
+    description: 'Continuously improving and developing oneself.',
     image: '/placeholder.svg?height=400&width=600',
-    category: 'Leadership',
+    category: 'Personal Development',
     timestamp: Date.now(),
     questions: [
-      "How did you inspire or influence someone today?",
-      "What positive impact did you make recently?",
-      "How are you leading by example?"
+      "How have you challenged yourself to grow today?",
+      "What new skill or knowledge have you acquired recently?",
+      "In what areas of your life do you see the most potential for growth?"
     ]
   },
   {
@@ -274,8 +279,8 @@ const initialValues: Value[] = [
       "How are you progressing toward your goals?",
       "What is your next major milestone?"
     ]
-  }
-  
+  },
+  // Add more initial values here...
 ]
 
 const initialStrengths: Strength[] = [
@@ -305,12 +310,315 @@ const initialStrengths: Strength[] = [
       'Explore a new place'
     ]
   },
+{
+  id: '3',
+  name: 'Judgment',
+  description: 'Making thoughtful and balanced decisions.',
+  icon: '⚖️',
+  color: colors.navy,
+  reflections: [],
+  activities: [
+    'Weigh pros and cons before making a decision',
+    'Consider multiple perspectives',
+    'Reflect on recent decisions for lessons learned'
+  ]
+},
+{
+  id: '4',
+  name: 'Love of Learning',
+  description: 'Mastering new skills and knowledge.',
+  icon: '📚',
+  color: colors.royalBlue,
+  reflections: [],
+  activities: [
+    'Take a course or workshop',
+    'Read about a topic of interest',
+    'Practice a skill you want to improve'
+  ]
+},
+{
+  id: '5',
+  name: 'Perspective',
+  description: 'Providing wise counsel to others.',
+  icon: '🌄',
+  color: colors.green,
+  reflections: [],
+  activities: [
+    'Share advice based on your experience',
+    'Reflect on the bigger picture',
+    'Help someone see a new point of view'
+  ]
+},
+{
+  id: '6',
+  name: 'Bravery',
+  description: 'Facing challenges with courage and determination.',
+  icon: '🦁',
+  color: colors.orange,
+  reflections: [],
+  activities: [
+    'Do something outside your comfort zone',
+    'Stand up for your beliefs',
+    'Take on a challenging task'
+  ]
+},
+{
+  id: '7',
+  name: 'Perseverance',
+  description: 'Finishing what you start and overcoming obstacles.',
+  icon: '🏃',
+  color: colors.hotPink,
+  reflections: [],
+  activities: [
+    'Set a challenging goal and stick to it',
+    'Work through a difficult problem',
+    'Celebrate progress towards long-term goals'
+  ]
+},
+{
+  id: '8',
+  name: 'Honesty',
+  description: 'Speaking the truth and acting with integrity.',
+  icon: '🗣️',
+  color: colors.pink,
+  reflections: [],
+  activities: [
+    'Be open about your feelings',
+    'Practice transparent communication',
+    'Hold yourself accountable'
+  ]
+},
+{
+  id: '9',
+  name: 'Zest',
+  description: 'Approaching life with excitement and energy.',
+  icon: '⚡',
+  color: colors.orange,
+  reflections: [],
+  activities: [
+    'Engage in a high-energy activity',
+    'Start the day with enthusiasm',
+    'Bring positivity to those around you'
+  ]
+},
+{
+  id: '10',
+  name: 'Love',
+  description: 'Valuing close relationships with others.',
+  icon: '💖',
+  color: colors.royalBlue,
+  reflections: [],
+  activities: [
+    'Spend quality time with a loved one',
+    'Express appreciation for others',
+    'Listen actively to someone you care about'
+  ]
+},
+{
+  id: '11',
+  name: 'Kindness',
+  description: 'Doing favors and good deeds for others.',
+  icon: '🤲',
+  color: colors.green,
+  reflections: [],
+  activities: [
+    'Help someone in need',
+    'Perform a random act of kindness',
+    'Volunteer your time or resources'
+  ]
+},
+{
+  id: '12',
+  name: 'Social Intelligence',
+  description: 'Being aware of the motives and feelings of others.',
+  icon: '🧠',
+  color: colors.orange,
+  reflections: [],
+  activities: [
+    'Observe body language in conversations',
+    'Practice active listening',
+    'Show empathy in interactions'
+  ]
+},
+{
+  id: '13',
+  name: 'Teamwork',
+  description: 'Working well as a member of a group or team.',
+  icon: '🤝',
+  color: colors.navy,
+  reflections: [],
+  activities: [
+    'Collaborate on a group project',
+    'Encourage others to share their ideas',
+    'Support teammates in reaching goals'
+  ]
+},
+{
+  id: '14',
+  name: 'Fairness',
+  description: 'Treating all people equally and justly.',
+  icon: '⚖️',
+  color: colors.teal,
+  reflections: [],
+  activities: [
+    'Ensure everyone’s voice is heard',
+    'Make impartial decisions',
+    'Stand up for those who are treated unfairly'
+  ]
+},
+{
+  id: '15',
+  name: 'Leadership',
+  description: 'Encouraging a group to get things done and maintain good relations.',
+  icon: '🌟',
+  color: colors.hotPink,
+  reflections: [],
+  activities: [
+    'Motivate others toward a common goal',
+    'Lead by example in difficult situations',
+    'Help resolve team conflicts'
+  ]
+},
+{
+  id: '16',
+  name: 'Forgiveness',
+  description: 'Forgiving those who have wronged you.',
+  icon: '🤲',
+  color: colors.green,
+  reflections: [],
+  activities: [
+    'Reflect on times you were forgiven',
+    'Let go of resentment',
+    'Extend understanding to someone who hurt you'
+  ]
+},
+{
+  id: '17',
+  name: 'Humility',
+  description: 'Letting accomplishments speak for themselves.',
+  icon: '🙏',
+  color: colors.navy,
+  reflections: [],
+  activities: [
+    'Practice listening more than speaking',
+    'Acknowledge others’ strengths',
+    'Be open to learning from others'
+  ]
+},
+{
+  id: '18',
+  name: 'Prudence',
+  description: 'Being careful about one’s choices; not taking unnecessary risks.',
+  icon: '🛑',
+  color: colors.teal,
+  reflections: [],
+  activities: [
+    'Consider the consequences before acting',
+    'Plan ahead for potential challenges',
+    'Take time to make thoughtful decisions'
+  ]
+},
+{
+  id: '19',
+  name: 'Self-Regulation',
+  description: 'Managing your emotions and behaviors effectively.',
+  icon: '🧘',
+  color: colors.purple,
+  reflections: [],
+  activities: [
+    'Practice mindfulness and deep breathing',
+    'Set boundaries to manage stress',
+    'Reflect on emotional responses'
+  ]
+},
+{
+  id: '20',
+  name: 'Appreciation of Beauty and Excellence',
+  description: 'Noticing and appreciating beauty, excellence, and skill in all domains.',
+  icon: '🌅',
+  color: colors.pink,
+  reflections: [],
+  activities: [
+    'Spend time in nature and observe details',
+    'Celebrate others’ achievements',
+    'Attend an art or music event'
+  ]
+},
+{
+  id: '21',
+  name: 'Gratitude',
+  description: 'Being aware and thankful for the good things that happen.',
+  icon: '🙏',
+  color: colors.orange,
+  reflections: [],
+  activities: [
+    'Write a daily gratitude list',
+    'Express appreciation to someone',
+    'Reflect on positive aspects of your life'
+  ]
+},
+{
+  id: '22',
+  name: 'Hope',
+  description: 'Expecting the best and working to achieve it.',
+  icon: '🌈',
+  color: colors.royalBlue,
+  reflections: [],
+  activities: [
+    'Set goals for the future',
+    'Visualize positive outcomes',
+    'Encourage others to stay optimistic'
+  ]
+},
+{
+  id: '23',
+  name: 'Humor',
+  description: 'Liking to laugh and tease; bringing smiles to others.',
+  icon: '😂',
+  color: colors.yellow,
+  reflections: [],
+  activities: [
+    'Share a funny story with a friend',
+    'Look for humor in everyday situations',
+    'Watch a comedy or read a humorous book'
+  ]
+},
+{
+  id: '24',
+  name: 'Spirituality',
+  description: 'Having coherent beliefs about the higher purpose and meaning of life.',
+  icon: '🕊️',
+  color: colors.purple,
+  reflections: [],
+  activities: [
+    'Engage in a spiritual practice or ritual',
+    'Reflect on life’s purpose',
+    'Spend time in meditation or prayer'
+  ]
+},
+  // Add more initial strengths here...
+]
+
+const initialMoments: Moment[] = [
+  {
+    id: 'welcome',
+    title: "Beginning My Personal Growth Journey",
+    description: "Today marks the start of my intentional journey towards personal growth and self-discovery. I'm excited to document my moments, explore my values, and develop my strengths.",
+    reflection: "This moment is meaningful because it represents my commitment to becoming the best version of myself. By starting this journal, I'm taking an active step towards understanding my values and leveraging my strengths.",
+    imageUrl: "/default-moment-image.jpeg", // This should be replaced with the actual default image path
+    values: ['1'], // Reference to the Growth value
+    strengths: ['1'], // Reference to the Creativity strength
+    timestamp: Date.now(),
+    mood: 5,
+    isDefault: true
+  }
 ]
 
 export default function PersonalGrowthJournal() {
   const [showSplash, setShowSplash] = useState(true)
   const [values, setValues] = useState<Value[]>(initialValues)
-  const [moments, setMoments] = useState<Moment[]>([])
+  const [moments, setMoments] = useState<Moment[]>(initialMoments)
+  const [userMoments, setUserMoments] = useState<Moment[]>([])
   const [strengths, setStrengths] = useState<Strength[]>(initialStrengths)
   const [showNewMomentDialog, setShowNewMomentDialog] = useState(false)
   const [showNewValueDialog, setShowNewValueDialog] = useState(false)
@@ -327,6 +635,10 @@ export default function PersonalGrowthJournal() {
   const [showInsights, setShowInsights] = useState(false)
   const [challenges, setChallenges] = useState<Challenge[]>([])
   const [showNewChallengeDialog, setShowNewChallengeDialog] = useState(false)
+  const [showMomentDetailDialog, setShowMomentDetailDialog] = useState(false)
+  const [selectedMoment, setSelectedMoment] = useState<Moment | null>(null)
+  const [showValueDetailDialog, setShowValueDetailDialog] = useState(false)
+  const [selectedValues, setSelectedValues] = useState<string[]>([])
 
   useEffect(() => {
     // Generate weekly challenges
@@ -369,7 +681,15 @@ export default function PersonalGrowthJournal() {
   }
 
   // Function to add or edit a moment
-  const addOrEditMoment = async (data: { title: string; description: string; reflection: string; image: File | null; values: string[]; mood: number }) => {
+  const addOrEditMoment = async (data: { 
+    title: string; 
+    description: string; 
+    reflection: string; 
+    image: File | null; 
+    values: string[]; 
+    strengths: string[]; 
+    mood: number 
+  }) => {
     let imageUrl = data.image ? await handleImageUpload({ target: { files: [data.image] } } as any) : '';
 
     if (!imageUrl && editingMoment) {
@@ -383,18 +703,19 @@ export default function PersonalGrowthJournal() {
       reflection: data.reflection,
       imageUrl: imageUrl || '/placeholder.svg?height=200&width=200',
       values: data.values,
+      strengths: data.strengths,
       timestamp: editingMoment ? editingMoment.timestamp : Date.now(),
       mood: data.mood,
     };
 
     if (editingMoment) {
-      setMoments(moments.map(m => m.id === editingMoment.id ? newMoment : m));
+      setUserMoments(userMoments.map(m => m.id === editingMoment.id ? newMoment : m));
       toast({
         title: "Moment updated",
         description: "Your moment has been successfully updated.",
       })
     } else {
-      setMoments([newMoment, ...moments]);
+      setUserMoments([newMoment, ...userMoments]);
       toast({
         title: "Moment added",
         description: "Your new moment has been successfully added.",
@@ -434,6 +755,7 @@ export default function PersonalGrowthJournal() {
     }
     setEditingValue(null);
     setShowNewValueDialog(false);
+    setShowValueDetailDialog(false);
   }
 
   // Function to update value image
@@ -448,20 +770,16 @@ export default function PersonalGrowthJournal() {
     })
   }
 
-  // Function to get a random value for reflection
-  const getRandomValue = () => {
-    const randomIndex = Math.floor(Math.random() * values.length)
-    setSelectedValue(values[randomIndex])
-  }
-
   const handleEditMoment = (moment: Moment) => {
     setEditingMoment(moment);
     setShowNewMomentDialog(true);
+    setShowMomentDetailDialog(false);
   };
 
   const handleEditValue = (value: Value) => {
     setEditingValue(value);
     setShowNewValueDialog(true);
+    setShowValueDetailDialog(false);
   };
 
   const handleStrengthSelect = (strength: Strength) => {
@@ -525,13 +843,9 @@ export default function PersonalGrowthJournal() {
     return 'balanced'
   }
 
-  const getQuestion1 = (strength: Strength) => {
-    return `How did you use your ${strength.name} in this situation?`
-  }
+  const getQuestion1 = (strength: Strength) => ` How did you use your ${strength.name} in this situation?`
 
-  const getQuestion2 = (strength: Strength) => {
-    return `What might help you balance your use of ${strength.name} in the future?`
-  }
+  const getQuestion2 = (strength: Strength) => `What might help you balance your use of ${strength.name} in the future?`
 
   const getInsightMessage = (usage: 'overuse' | 'underuse' | 'balanced') => {
     switch (usage) {
@@ -592,10 +906,23 @@ export default function PersonalGrowthJournal() {
     }
   }
 
+  // Function to handle value selection
+  const handleValueSelect = (valueId: string) => {
+    setSelectedValues(prevSelected => {
+      if (prevSelected.includes(valueId)) {
+        // If already selected, remove it
+        return prevSelected.filter(id => id !== valueId);
+      } else {
+        // Otherwise, add it
+        return [...prevSelected, valueId];
+      }
+    });
+  };
+
   if (showSplash) {
     return (
       <motion.div 
-        className="min-h-screen bg-gradient-to-br from-[#4B4AEF] to-[#FF1F7D] flex flex-col items-center justify-center p-4"
+        className="min-h-screen bg-white flex flex-col items-center justify-center p-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
@@ -612,7 +939,7 @@ export default function PersonalGrowthJournal() {
               ease: "linear"
             }}
           >
-            <Heart className="w-full h-full text-white" />
+            <Heart className="w-full h-full" style={{ color: colors.hotPink }} />
           </motion.div>
           <motion.div
             className="w-24 h-24 mx-4"
@@ -625,7 +952,7 @@ export default function PersonalGrowthJournal() {
               ease: "easeInOut"
             }}
           >
-            <Scale className="w-full h-full text-white" />
+            <Scale className="w-full h-full" style={{ color: colors.royalBlue }} />
           </motion.div>
           <motion.div
             className="w-24 h-24 mx-4"
@@ -638,11 +965,11 @@ export default function PersonalGrowthJournal() {
               ease: "easeInOut"
             }}
           >
-            <Dumbbell className="w-full h-full text-white" />
+            <Dumbbell className="w-full h-full" style={{ color: colors.green }} />
           </motion.div>
         </div>
         <motion.h1 
-          className="text-4xl md:text-6xl font-bold mb-4 text-white text-center"
+          className="text-4xl md:text-6xl font-bold mb-4 text-center bg-gradient-to-r from-[#FF1F7D] via-[#4B4AEF] to-[#00DC82] text-transparent bg-clip-text"
           initial={{ y: -50 }}
           animate={{ y: 0 }}
           transition={{ delay: 0.5 }}
@@ -650,7 +977,7 @@ export default function PersonalGrowthJournal() {
           Personal Growth Journal
         </motion.h1>
         <motion.p 
-          className="text-xl text-white mb-8 text-center max-w-md"
+          className="text-xl mb-8 text-center max-w-md text-[#1F2261]"
           initial={{ y: 50 }}
           animate={{ y: 0 }}
           transition={{ delay: 0.7 }}
@@ -658,7 +985,7 @@ export default function PersonalGrowthJournal() {
           Discover your moments, values, and strengths
         </motion.p>
         <motion.button
-          className="px-8 py-3 bg-white text-[#4B4AEF] rounded-full font-semibold text-lg shadow-lg hover:bg-opacity-90 transition duration-300"
+          className="px-8 py-3 bg-gradient-to-r from-[#FF1F7D] to-[#4B4AEF] text-white rounded-full font-semibold text-lg shadow-lg hover:opacity-90 transition duration-300"
           onClick={() => setShowSplash(false)}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -670,7 +997,7 @@ export default function PersonalGrowthJournal() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#4B4AEF]/10 to-[#FF1F7D]/10 p-4 md:p-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#4B4AEF]/5 to-[#FF1F7D]/5 p-4 md:p-8">
       <h1 className="text-3xl font-bold text-[#1F2261] mb-8 text-center">Personal Growth Journal</h1>
       
       <Tabs defaultValue="moments" className="max-w-7xl mx-auto">
@@ -682,106 +1009,26 @@ export default function PersonalGrowthJournal() {
         </TabsList>
 
         <TabsContent value="moments">
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-            {/* Add New Moment Card */}
-            <Dialog open={showNewMomentDialog} onOpenChange={(open) => {
-              setShowNewMomentDialog(open);
-              if (!open) {
-                setEditingMoment(null);
-                setSelectedValue(null);
-              }
-            }}>
-              <DialogTrigger asChild>
-                <Card className="cursor-pointer hover:shadow-lg transition-shadow border-dashed">
-                  <CardContent className="flex flex-col items-center justify-center h-full min-h-[150px] sm:min-h-[200px]">
-                    <PlusCircle className="w-10 h-10 sm:w-12 sm:h-12 text-purple-500 mb-2 sm:mb-4" />
-                    <p className="text-base sm:text-lg font-medium text-purple-600">Add New Moment</p>
-                  </CardContent>
-                </Card>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>{editingMoment ? 'Edit Moment' : 'Add New Moment'}</DialogTitle>
-                  <DialogDescription>
-                    {editingMoment ? 'Update your meaningful moment' : 'Capture a meaningful moment in your journey'}
-                  </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={(e) => {
-                  e.preventDefault();
-                  const formData = new FormData(e.currentTarget);
-                  const momentData = {
-                    title: formData.get('title') as string,
-                    description: formData.get('description') as string,
-                    reflection: formData.get('reflection') as string,
-                    image: (formData.get('image') as File) || null,
-                    values: formData.getAll('values') as string[],
-                    mood: Number(formData.get('mood')),
-                  };
-                  
-                  addOrEditMoment(momentData);
-                }}>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid gap-2">
-                      <Label htmlFor="title">Title</Label>
-                      <Input id="title" name="title" defaultValue={editingMoment?.title} required />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="description">What happened?</Label>
-                      <Textarea id="description" name="description" defaultValue={editingMoment?.description} required />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="reflection">Why was this meaningful?</Label>
-                      <Textarea id="reflection" name="reflection" defaultValue={editingMoment?.reflection} required />
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="image">
-                        {editingMoment ? 'Change Image' : 'Add an Image'}
-                      </Label>
-                      <Input id="image" name="image" type="file" accept="image/*" />
-                      {editingMoment && (
-                        <img src={editingMoment.imageUrl} alt="Current" className="w-full h-32 object-cover rounded-md" />
-                      )}
-                    </div>
-                    <div className="grid gap-2">
-                      <Label>Associated Values</Label>
-                      <div className="grid grid-cols-2 gap-2">
-                        {values.map((value) => (
-                          <div key={value.id} className="flex items-center space-x-2">
-                            <Checkbox 
-                              id={`value-${value.id}`} 
-                              name="values" 
-                              value={value.id}
-                              defaultChecked={!!(editingMoment?.values.includes(value.id) || (selectedValue && selectedValue.id === value.id))}
-                            />
-                            <Label htmlFor={`value-${value.id}`} className="text-sm">{value.name}</Label>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    <div className="grid gap-2">
-                      <Label htmlFor="mood">Mood</Label>
-                      <Slider
-                        id="mood"
-                        name="mood"
-                        min={1}
-                        max={5}
-                        step={1}
-                        defaultValue={[editingMoment?.mood || 3]}
-                      />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full">{editingMoment ? 'Update Moment' : 'Save Moment'}</Button>
-                </form>
-                <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-                  <X className="h-4 w-4" />
-                  <span className="sr-only">Close</span>
-                </DialogClose>
-              </DialogContent>
-            </Dialog>
-
-            {/* Moment Cards */}
-            {moments.map((moment) => (
-              <Card key={moment.id} className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" onClick={() => handleEditMoment(moment)}>
+          <div className="flex justify-end mb-6">
+            <Button
+              onClick={() => setShowNewMomentDialog(true)}
+              className="bg-gradient-to-r from-[#FF1F7D] to-[#4B4AEF] text-white hover:opacity-90"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Add New Moment
+            </Button>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {[...moments, ...userMoments].map((moment) => (
+              <Card 
+                key={moment.id} 
+                className="overflow-hidden cursor-pointer hover:shadow-lg transition-shadow" 
+                onClick={() => {
+                  setSelectedMoment(moment);
+                  setShowMomentDetailDialog(true);
+                }}
+              >
                 <div className="aspect-video relative overflow-hidden">
                   <img 
                     src={moment.imageUrl} 
@@ -793,34 +1040,32 @@ export default function PersonalGrowthJournal() {
                   <CardTitle className="text-lg sm:text-xl truncate">{moment.title}</CardTitle>
                   <CardDescription className="text-sm">{new Date(moment.timestamp).toLocaleDateString()}</CardDescription>
                 </CardHeader>
+                {moment.isDefault && (
+                  <CardFooter>
+                    <p className="text-sm text-muted-foreground">Default moment (view only)</p>
+                  </CardFooter>
+                )}
               </Card>
             ))}
           </div>
         </TabsContent>
 
         <TabsContent value="values">
-          <div className="grid gap-4 sm:gap-6">
-            <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-              <h2 className="text-xl sm:text-2xl font-semibold text-purple-600">Your Core Values</h2>
-              <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
-                <div className="relative w-full sm:w-auto">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
-                  <Input
-                    type="text"
-                    placeholder="Search values..."
-                    className="pl-10 w-full sm:w-[200px]"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                  />
-                </div>
-                <Button onClick={getRandomValue} variant="outline" className="gap-2 w-full sm:w-auto">
-                  <Shuffle className="w-4 h-4" />
-                  Random
+          <div className="grid gap-6">
+            <div className="flex justify-between items-center">
+              <h2 className="text-2xl font-semibold" style={{ color: colors.navy }}>Your Core Values</h2>
+              <div className="flex items-center gap-4">
+                <Button
+                  onClick={() => setShowNewValueDialog(true)}
+                  className="bg-gradient-to-r from-[#4B4AEF] to-[#FF1F7D] text-white hover:opacity-90"
+                >
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add New Value
                 </Button>
               </div>
             </div>
-
-            <div className="flex flex-wrap gap-2 mb-4 sm:mb-6">
+            
+            <div className="flex flex-wrap gap-2 mb-4">
               <Button
                 variant={selectedCategory === null ? "default" : "outline"}
                 onClick={() => setSelectedCategory(null)}
@@ -840,78 +1085,27 @@ export default function PersonalGrowthJournal() {
               ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6">
-              {/* Add New Value Card */}
-              <Dialog open={showNewValueDialog} onOpenChange={setShowNewValueDialog}>
-                <DialogTrigger asChild>
-                  <Card className="cursor-pointer hover:shadow-lg transition-shadow border-dashed">
-                    <CardContent className="flex flex-col items-center justify-center h-full min-h-[150px] sm:min-h-[200px]">
-                      <PlusCircle className="w-10 h-10 sm:w-12 sm:h-12 text-purple-500 mb-2 sm:mb-4" />
-                      <p className="text-base sm:text-lg font-medium text-purple-600">Add New Value</p>
-                    </CardContent>
-                  </Card>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-[425px] max-h-[90vh] overflow-y-auto">
-                  <DialogHeader>
-                    <DialogTitle>{editingValue ? 'Edit Value' : 'Add New Value'}</DialogTitle>
-                    <DialogDescription>
-                      {editingValue ? 'Update your core value' : 'Define a new core value that guides your life'}
-                    </DialogDescription>
-                  </DialogHeader>
-                  <form onSubmit={(e) => {
-                    e.preventDefault()
-                    const formData = new FormData(e.currentTarget)
-                    addOrEditValue({
-                      name: formData.get('name') as string,
-                      description: formData.get('description') as string,
-                      category: formData.get('category') as string,
-                      image: (formData.get('image') as File) || null,
-                      questions: [
-                        formData.get('question1') as string,
-                        formData.get('question2') as string,
-                        formData.get('question3') as string,
-                      ].filter(Boolean),
-                    })
-                  }}>
-                    <div className="grid gap-4 py-4">
-                      <div className="grid gap-2">
-                        <Label htmlFor="name">Value Name</Label>
-                        <Input id="name" name="name" defaultValue={editingValue?.name} required />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="description">What does this value mean to you?</Label>
-                        <Textarea id="description" name="description" defaultValue={editingValue?.description} required />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="category">Category</Label>
-                        <Input id="category" name="category" defaultValue={editingValue?.category} required />
-                      </div>
-                      <div className="grid gap-2">
-                        <Label htmlFor="image">Add an Image</Label>
-                        <Input id="image" name="image" type="file" accept="image/*" />
-                        {editingValue && (
-                          <img src={editingValue.image} alt="Current" className="w-full h-32 object-cover rounded-md" />
-                        )}
-                      </div>
-                      <div className="grid gap-2">
-                        <Label>Reflection Questions</Label>
-                        <Input name="question1" placeholder="Question 1" defaultValue={editingValue?.questions[0]} />
-                        <Input name="question2" placeholder="Question 2" defaultValue={editingValue?.questions[1]} />
-                        <Input name="question3" placeholder="Question 3" defaultValue={editingValue?.questions[2]} />
-                      </div>
-                    </div>
-                    <Button type="submit" className="w-full">{editingValue ? 'Update Value' : 'Save Value'}</Button>
-                  </form>
-                  <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
-                    <X className="h-4 w-4" />
-                    <span className="sr-only">Close</span>
-                  </DialogClose>
-                </DialogContent>
-              </Dialog>
+            <div className="relative w-full mb-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <Input
+                type="text"
+                placeholder="Search values..."
+                className="pl-10"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
 
-              {/* Value Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {filteredValues.map((value) => (
-                <Card key={value.id} className="group relative overflow-hidden cursor-pointer" onClick={() => handleEditValue(value)}>
+                <Card 
+                  key={value.id} 
+                  className="group relative overflow-hidden cursor-pointer" 
+                  onClick={() => {
+                    setSelectedValue(value);
+                    setShowValueDetailDialog(true);
+                  }}
+                >
                   <div className="absolute inset-0">
                     <img 
                       src={value.image} 
@@ -920,14 +1114,14 @@ export default function PersonalGrowthJournal() {
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-black/20" />
                   </div>
-                  <CardContent className="relative p-4 sm:p-6 flex flex-col items-center justify-end min-h-[150px] sm:min-h-[200px]">
-                    <span className="text-2xl sm:text-3xl mb-2">{value.icon}</span>
-                    <h3 className="text-lg sm:text-xl font-bold text-white text-center">{value.name}</h3>
-                    <span className="text-xs sm:text-sm text-white/80">{value.category}</span>
+                  <CardContent className="relative p-4 flex flex-col items-center justify-end min-h-[200px]">
+                    <span className="text-3xl mb-2">{value.icon}</span>
+                    <h3 className="text-xl font-bold text-white text-center">{value.name}</h3>
+                    <span className="text-sm text-white/80">{value.category}</span>
                   </CardContent>
                   <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity">
                     <Label htmlFor={`image-upload-${value.id}`} className="cursor-pointer">
-                      <Upload className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+                      <Upload className="w-6 h-6 text-white" />
                     </Label>
                     <Input
                       id={`image-upload-${value.id}`}
@@ -951,10 +1145,10 @@ export default function PersonalGrowthJournal() {
 
         <TabsContent value="strengths">
           <div className="grid gap-6">
-            <div className="flex justify-end">
+            <div className="flex justify-end mb-6">
               <Button
                 onClick={() => setShowNewStrengthDialog(true)}
-                className="bg-[#00DC82] hover:bg-[#00DC82]/90"
+                className="bg-gradient-to-r from-[#FF1F7D] to-[#4B4AEF] text-white hover:opacity-90"
               >
                 <Plus className="w-4 h-4 mr-2" />
                 Add New Strength
@@ -1030,7 +1224,7 @@ export default function PersonalGrowthJournal() {
                 <div className="space-y-4">
                   <Button
                     onClick={() => setShowNewChallengeDialog(true)}
-                    className="w-full bg-[#00DC82] hover:bg-[#00DC82]/90"
+                    className="w-full bg-gradient-to-r from-[#FF1F7D] to-[#4B4AEF] text-white hover:opacity-90"
                   >
                     <Plus className="w-4 h-4 mr-2" />
                     Create New Challenge
@@ -1072,6 +1266,146 @@ export default function PersonalGrowthJournal() {
           </div>
         </TabsContent>
       </Tabs>
+
+      <Dialog open={showNewMomentDialog} onOpenChange={setShowNewMomentDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{editingMoment ? 'Edit Moment' : 'Add New Moment'}</DialogTitle>
+            <DialogDescription>
+              {editingMoment ? 'Update your moment' : 'Capture a meaningful moment in your journey'}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault()
+            const formData = new FormData(e.currentTarget)
+            addOrEditMoment({
+              title: formData.get('title') as string,
+              description: formData.get('description') as string,
+              reflection: formData.get('reflection') as string,
+              image: (formData.get('image') as File) || null,
+              values: formData.getAll('values') as string[],
+              strengths: formData.getAll('strengths') as string[],
+              mood: 3, // Default mood since we're removing the slider
+            })
+          }}>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="title">Title</Label>
+                <Input id="title" name="title" required defaultValue={editingMoment?.title} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="description">What happened?</Label>
+                <Textarea id="description" name="description" required defaultValue={editingMoment?.description} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="reflection">Why was this meaningful?</Label>
+                <Textarea id="reflection" name="reflection" required defaultValue={editingMoment?.reflection} />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="image">Add an Image</Label>
+                <Input id="image" name="image" type="file" accept="image/*" />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="values">Associated Values</Label>
+                <Select name="values">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select values" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {values.map((value) => (
+                      <SelectItem 
+                        key={value.id} 
+                        value={value.id} 
+                        onClick={() => handleValueSelect(value.id)}
+                      >
+                        {value.icon} {value.name}
+                        {selectedValues.includes(value.id) && ' (Selected)'}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="strengths">Associated Strengths</Label>
+                <Select name="strengths">
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select strengths" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {strengths.map((strength) => (
+                      <SelectItem key={strength.id} value={strength.id}>
+                        {strength.icon} {strength.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit" className="w-full bg-gradient-to-r from-[#FF1F7D] to-[#4B4AEF] text-white hover:opacity-90">
+                {editingMoment ? 'Update Moment' : 'Save Moment'}
+              </Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showNewValueDialog} onOpenChange={setShowNewValueDialog}>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>{editingValue ? 'Edit Value' : 'Add New Value'}</DialogTitle>
+            <DialogDescription>
+              {editingValue ? 'Update your core value' : 'Define a new core value that guides your life'}
+            </DialogDescription>
+          </DialogHeader>
+          <form onSubmit={(e) => {
+            e.preventDefault()
+            const formData = new FormData(e.currentTarget)
+            addOrEditValue({
+              name: formData.get('name') as string,
+              description: formData.get('description') as string,
+              category: formData.get('category') as string,
+              image: (formData.get('image') as File) || null,
+              questions: [
+                formData.get('question1') as string,
+                formData.get('question2') as string,
+                formData.get('question3') as string,
+              ].filter(Boolean),
+            })
+          }}>
+            <div className="grid gap-4 py-4">
+              <div className="grid gap-2">
+                <Label htmlFor="name">Value Name</Label>
+                <Input id="name" name="name" defaultValue={editingValue?.name} required />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="description">What does this value mean to you?</Label>
+                <Textarea id="description" name="description" defaultValue={editingValue?.description} required />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="category">Category</Label>
+                <Input id="category" name="category" defaultValue={editingValue?.category} required />
+              </div>
+              <div className="grid gap-2">
+                <Label htmlFor="image">Add an Image</Label>
+                <Input id="image" name="image" type="file" accept="image/*" />
+                {editingValue && (
+                  <img src={editingValue.image} alt="Current" className="w-full h-32 object-cover rounded-md" />
+                )}
+              </div>
+              <div className="grid gap-2">
+                <Label>Reflection Questions</Label>
+                <Input name="question1" placeholder="Question 1" defaultValue={editingValue?.questions[0]} />
+                <Input name="question2" placeholder="Question 2" defaultValue={editingValue?.questions[1]} />
+                <Input name="question3" placeholder="Question 3" defaultValue={editingValue?.questions[2]} />
+              </div>
+            </div>
+            <DialogFooter>
+              <Button type="submit" className="w-full">{editingValue ? 'Update Value' : 'Save Value'}</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
 
       <Dialog open={showNewStrengthDialog} onOpenChange={setShowNewStrengthDialog}>
         <DialogContent>
@@ -1177,6 +1511,94 @@ export default function PersonalGrowthJournal() {
               setReflectionStep(0)
               setCurrentReflection({})
             }}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showMomentDetailDialog} onOpenChange={setShowMomentDetailDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>{selectedMoment?.title}</DialogTitle>
+            <DialogDescription>
+              {new Date(selectedMoment?.timestamp || 0).toLocaleDateString()}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <img 
+              src={selectedMoment?.imageUrl} 
+              alt={selectedMoment?.title} 
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />
+            <h3 className="font-semibold mb-2">What happened:</h3>
+            <p className="mb-4">{selectedMoment?.description}</p>
+            <h3 className="font-semibold mb-2">Why it was meaningful:</h3>
+            <p className="mb-4">{selectedMoment?.reflection}</p>
+            <h3 className="font-semibold mb-2">Associated Values:</h3>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {selectedMoment?.values.map(valueId => {
+                const value = values.find(v => v.id === valueId)
+                return value ? (
+                  <span key={value.id} className="px-2 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
+                    {value.name}
+                  </span>
+                ) : null
+              })}
+            </div>
+            <h3 className="font-semibold mb-2">Associated Strengths:</h3>
+            <div className="flex flex-wrap gap-2 mb-4">
+              {selectedMoment?.strengths.map(strengthId => {
+                const strength = strengths.find(s => s.id === strengthId)
+                return strength ? (
+                  <span key={strength.id} className="px-2 py-1 bg-green-100 text-green-800 rounded-full text-sm">
+                    {strength.name}
+                  </span>
+                ) : null
+              })}
+            </div>
+          </div>
+          <DialogFooter>
+            {!selectedMoment?.isDefault && (
+              <Button onClick={() => handleEditMoment(selectedMoment!)}>
+                Edit Moment
+              </Button>
+            )}
+            <Button onClick={() => setShowMomentDetailDialog(false)}>
+              Close
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={showValueDetailDialog} onOpenChange={setShowValueDetailDialog}>
+        <DialogContent className="sm:max-w-[600px]">
+          <DialogHeader>
+            <DialogTitle>{selectedValue?.name}</DialogTitle>
+            <DialogDescription>
+              {selectedValue?.category}
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <img 
+              src={selectedValue?.image} 
+              alt={selectedValue?.name} 
+              className="w-full h-48 object-cover rounded-md mb-4"
+            />
+            <h3 className="font-semibold mb-2">Description:</h3>
+            <p className="mb-4">{selectedValue?.description}</p>
+            <h3 className="font-semibold mb-2">Reflection Questions:</h3>
+            <ul className="list-disc pl-5 mb-4">
+              {selectedValue?.questions.map((question, index) => (
+                <li key={index}>{question}</li>
+              ))}
+            </ul>
+          </div>
+          <DialogFooter>
+            <Button onClick={() => handleEditValue(selectedValue!)}>
+              Edit Value
+            </Button>
+            <Button onClick={() => setShowValueDetailDialog(false)}>
               Close
             </Button>
           </DialogFooter>
